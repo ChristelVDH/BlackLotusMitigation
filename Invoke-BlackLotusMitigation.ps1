@@ -99,9 +99,10 @@ begin {
 		$TpmIds = @(1032, 1033, 1034, 1036, 1037, 1795, 1796, 1797, 1798, 1799)
 		$TpmEvents = Get-WinEvent -ProviderName "Microsoft-Windows-TPM-WMI" | Where-Object { $_.id -in $TpmIds } | Sort-Object TimeCreated
 		$TpmEvents | Out-String | Write-Verbose
+  		[string[]]$Message = @()
 		switch ($TpmEvents.Id) {
 			1032 { 
-				"Preventing Bitlocker Recovery mode during BlackLotus mitigation..."
+				$Message += "Preventing Bitlocker Recovery mode during BlackLotus mitigation..."
 				Suspend-BitLocker -MountPoint C -RebootCount 2
 			}
 			1033 { $Message += "deferring DBX update..." }
